@@ -1,15 +1,24 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'AWS Serverless Application Repository Action'
+description: 'Use AWS SAM CLI to build and deploy to Serverless Application Repository'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  template:
+    description: "AWS SAM template file name"
+    default: "template.yml"
     required: true
-    default: 'World'
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  s3bucket:
+    description: "AWS S3 Bucket where to upload artifact package"
+    required: true
+  s3prefix:
+    description: "AWS S3 Object prefix"
+    default: ""
+    required: false
+  version:
+    description: "The application version tag to deploy, leave empty to use GITHUB_REF"
+    default: ""
+    required: false
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.who-to-greet }}
+    - \"${{ inputs.template }}\" \"${{ inputs.s3bucket }}\" \"${{ inputs.s3prefix }}\" \"${{ inputs.version }}\" 

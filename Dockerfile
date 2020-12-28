@@ -1,8 +1,18 @@
-# Container image that runs your code
-FROM alpine:3.10
+FROM python:3
 
-# Copies your code file from your action repository to the filesystem path `/` of the container
+# Install dependencies
+
+RUN apt update && apt install -y bash
+RUN pip install aws-sam-cli
+
+# Default environment variable
+
+ENV SAM_CLI_TELEMETRY 0
+ENV AWS_DEFAULT_REGION us-east-1
+ENV SAM_DEFAULT_TEMPLATE template.yml
+
+# Setup entrypoint
+
 COPY entrypoint.sh /entrypoint.sh
 
-# Code file to execute when the docker container starts up (`entrypoint.sh`)
 ENTRYPOINT ["/entrypoint.sh"]
