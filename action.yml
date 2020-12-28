@@ -1,6 +1,10 @@
 name: 'AWS Serverless Application Repository Action'
 description: 'Use AWS SAM CLI to build and deploy to Serverless Application Repository'
 inputs:
+  src:
+    description: "AWS SAM project path"
+    default: "./"
+    required: true
   template:
     description: "AWS SAM template file name"
     default: "template.yml"
@@ -21,4 +25,4 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - \"${{ inputs.template }}\" \"${{ inputs.s3bucket }}\" \"${{ inputs.s3prefix }}\" \"${{ inputs.version }}\" 
+    - \"${{ inputs.src }}\" \"${{ inputs.template }}\" \"${{ inputs.s3bucket }}\" \"${{ inputs.s3prefix }}\" \"${{ inputs.version }}\" 
