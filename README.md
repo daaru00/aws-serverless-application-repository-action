@@ -53,6 +53,7 @@ Create a IAM user with programmatic access and the following permission attached
             "Effect": "Allow",
             "Action": [
                 "serverlessrepo:CreateApplication",
+                "serverlessrepo:UpdateApplication",
                 "serverlessrepo:CreateApplicationVersion"
             ],
             "Resource": "*"
@@ -88,3 +89,75 @@ steps:
       version: '1.0.0'
 ```
 if `version` is not set will be elaborate from `GITHUB_REF` environment variable (works only when a tag is pushed and ref contains `refs/tags/`).
+
+## Examples
+
+Here an example of action with npm dependencies:
+```yml
+name: Publish new application version
+
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: eu-west-1
+
+jobs:
+  layers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+      - uses: actions/cache@v2
+        with:
+          path: 'node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm install --production
+
+      - name: Publish Application
+        uses: daaru00/aws-serverless-application-repository-action@v1
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: eu-west-1
+        with:
+          s3bucket: 'my-artifact-bucket'
+          s3prefix: 'my-app'
+```
+
+Here an example of application publish on multiple regions:
+```yml
+name: Publish new application version
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  layers:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        region: ['us-east-1', 'eu-west-1', 'cn-north-1']
+    steps:
+      - name: Publish Application
+        uses: daaru00/aws-serverless-application-repository-action@v1
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ matrix.region }}
+        with:
+          s3bucket: 'my-artifact-bucket'
+          s3prefix: ${{ matrix.region }}
+```
