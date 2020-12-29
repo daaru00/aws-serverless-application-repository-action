@@ -8,7 +8,7 @@ SAM_TEMPLATE=${2}
 S3_BUCKET=${3}
 S3_BUCKET_PREFIX=${4}
 
-if [ -z "$5" ]
+if [ ! -z "$5" ]
 then
   SAM_VERSION=$5
 else
