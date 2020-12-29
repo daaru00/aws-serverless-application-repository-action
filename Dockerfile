@@ -9,8 +9,6 @@ RUN pip install aws-sam-cli
 
 ENV SAM_CLI_TELEMETRY 0
 ENV AWS_DEFAULT_REGION us-east-1
-ENV SAM_DEFAULT_SRC ./
-ENV SAM_DEFAULT_TEMPLATE template.yml
 
 # Setup entrypoint
 
