@@ -25,4 +25,8 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - \"${{ inputs.src }}\" \"${{ inputs.template }}\" \"${{ inputs.s3bucket }}\" \"${{ inputs.s3prefix }}\" \"${{ inputs.version }}\" 
+    - ${{ inputs.src }}
+    - ${{ inputs.template }}
+    - ${{ inputs.s3bucket }}
+    - ${{ inputs.s3prefix }}
+    - ${{ inputs.version }}
