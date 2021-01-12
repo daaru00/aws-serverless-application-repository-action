@@ -1,5 +1,8 @@
 name: 'AWS Serverless Application Repository Action'
 description: 'Use AWS SAM CLI to build and deploy to Serverless Application Repository'
+branding:
+  icon: 'box'  
+  color: 'orange'
 inputs:
   src:
     description: "AWS SAM project path"
