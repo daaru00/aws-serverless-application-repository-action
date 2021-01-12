@@ -1,6 +1,6 @@
 # AWS Serverless Application Repository Action
 
-This GitHub action that pack and publish a new version of SAM Application to AWS Serverless Application Repository.
+This GitHub action pack and publish a new version of a SAM Application to [AWS Serverless Application Repository](https://aws.amazon.com/serverless/serverlessrepo/).
 
 ## Prerequisites
 
@@ -22,7 +22,7 @@ Create an S3 bucket with the following policy in order to allow Serverless Repos
 ```
 (change `my-artifact-bucket` with the name of your bucket)
 
-Create a IAM user with programmatic access and the following permission attached that allow to create an Application or Application Version:
+Create a IAM user with programmatic access and add following permission to allow create or update Application and Application's Versions:
 ```json
 {
     "Version": "2012-10-17",
@@ -88,7 +88,7 @@ steps:
       s3prefix: 'my-app'
       version: '1.0.0'
 ```
-if `version` is not set will be elaborate from `GITHUB_REF` environment variable (works only when a tag is pushed and ref contains `refs/tags/`).
+if `version` is not set, it will be elaborate from `GITHUB_REF` environment variable (works only when a tag is pushed and ref contains `refs/tags/`).
 
 ## Examples
 
